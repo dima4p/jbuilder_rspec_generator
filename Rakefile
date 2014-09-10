@@ -17,10 +17,10 @@ Jeweler::Tasks.new do |gem|
   gem.name = "jbuilder_rspec_generator"
   gem.homepage = "http://github.com/dima4p/jbuilder_rspec_generator"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{RSpecs for jbuilder templates}
+  gem.description = %Q{Generates RSpecs for jbuilder templates}
   gem.email = "dima@koulikoff.ru"
-  gem.authors = ["Dmitri Koulikoff (acer)"]
+  gem.authors = ["Dmitri Koulikoff"]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new

@@ -1,6 +1,26 @@
 = jbuilder_rspec_generator
 
-Description goes here.
+Jbuilder gem lacks rspecs for views. This gem covers the shotage
+
+== Installation
+
+Add to your Gemfile
+
+  gem 'jbuilder_rspec_generator'
+
+Then bundle as usual.
+
+== Usage
+
+Next time you run
+
+  rails generate jbuilder SomeModel ...
+
+or
+
+  rails generate scaffold SomeModel ...
+
+you will get the the rspecs for the jbuilder views.
 
 == Contributing to jbuilder_rspec_generator
  
@@ -14,6 +34,6 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2014 Dmitri Koulikoff (acer). See LICENSE.txt for
+Copyright (c) 2014 Dmitri Koulikoff. See LICENSE.txt for
 further details.
 
