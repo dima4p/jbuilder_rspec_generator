@@ -20,7 +20,7 @@ or
 
   rails generate scaffold SomeModel ...
 
-you will get the the rspecs for the jbuilder views.
+you will get the rspecs for the jbuilder views.
 
 == Contributing to jbuilder_rspec_generator
  
