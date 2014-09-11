@@ -3,7 +3,7 @@ require 'spec_helper'
 <% output_attributes = attributes.reject{|attribute| [:datetime, :timestamp, :time, :date].index(attribute.type) } -%>
 describe "<%= ns_table_name %>/index.json.jbuilder" do
   before(:each) do
-    controller.stub(:can?).and_return(true)
+    allow(controller).to receive(:can?).and_return(true)
 <% if Rails.application.config.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
     @<%= ns_file_name %> = create(:<%= ns_file_name %>)
     assign(:<%= table_name %>, [@<%= ns_file_name %>, @<%= ns_file_name %>])
@@ -23,6 +23,7 @@ describe "<%= ns_table_name %>/index.json.jbuilder" do
   end
 
   attributes = %w[
+    id
 <% for attribute in output_attributes -%>
     <%= attribute.name %>
 <% end -%>
@@ -33,11 +34,11 @@ describe "<%= ns_table_name %>/index.json.jbuilder" do
     render
 
     hash = JSON.parse(rendered)
-    hash.first.should == hash = hash.last
-    hash.keys.sort.should == attributes.sort
+    expect(hash.first).to eq(hash = hash.last)
+    expect(hash.keys.sort).to eq attributes.sort
 <% for attribute in output_attributes -%>
-    hash['<%= attribute.name %>'].should == @<%= ns_file_name %>.<%= attribute.name %>
+    expect(hash['<%= attribute.name %>']).to eq @<%= ns_file_name %>.<%= attribute.name %>
 <% end -%>
-    hash['url'].should == <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
+    expect(hash['url']).to eq <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
   end
 end
