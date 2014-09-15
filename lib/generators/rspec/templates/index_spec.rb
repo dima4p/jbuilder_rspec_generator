@@ -1,6 +1,10 @@
+<% if File.exist?(File.join %w[spec rails_helper.rb]) -%>
+require 'rails_helper'
+<% else -%>
 require 'spec_helper'
+<% end -%>
 
-describe "<%= ns_table_name %>/index.json.jbuilder" do
+describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
   before(:each) do
     allow(controller).to receive(:can?).and_return(true)
 <% if Rails.application.config.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
