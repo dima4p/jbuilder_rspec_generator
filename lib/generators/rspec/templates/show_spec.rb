@@ -34,7 +34,7 @@ describe "<%= ns_table_name %>/show.json.jbuilder", type: :view do
 
     hash = MultiJson.load rendered
     expect(hash.keys.sort).to eq attributes.sort
-    expected = MultiJson.load MultiJson.dump @user.attributes.slice *attributes
+    expected = MultiJson.load MultiJson.dump @<%= ns_file_name %>.attributes.slice *attributes
     expect(hash).to eq expected
 <% for attribute in attributes -%>
     # expect(hash['<%= attribute.name %>']).to eq expected['<%= attribute.name %>']
