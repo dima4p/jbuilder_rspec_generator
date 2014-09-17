@@ -39,7 +39,7 @@ describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
     expected['url'] = <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
     expect(hash).to eq expected
 <% for attribute in attributes -%>
-    # expect(hash['<%= attribute.name %>']).to eq expected['<%= attribute.name %>']
+    # expect(hash['<%= attribute.name %>']).to eq @<%= ns_file_name %>.<%= attribute.name %>.to_s
 <% end -%>
     # expect(hash['url']).to eq <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
   end
