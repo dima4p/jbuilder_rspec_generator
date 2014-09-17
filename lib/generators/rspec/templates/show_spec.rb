@@ -32,10 +32,12 @@ describe "<%= ns_table_name %>/show.json.jbuilder", type: :view do
   it "renders the following attributes of <%= ns_file_name %>: #{attributes.join(', ')} as json" do
     render
 
-    hash = JSON.parse(rendered)
+    hash = MultiJson.load rendered
     expect(hash.keys.sort).to eq attributes.sort
+    expected = MultiJson.load MultiJson.dump @user.attributes.slice *attributes
+    expect(hash).to eq expected
 <% for attribute in attributes -%>
-    expect(hash['<%= attribute.name %>']).to eq @<%= ns_file_name %>.<%= attribute.name %>.to_s
+    # expect(hash['<%= attribute.name %>']).to eq expected['<%= attribute.name %>']
 <% end -%>
   end
 end

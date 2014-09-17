@@ -24,18 +24,23 @@ describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
 <% for attribute in attributes -%>
     <%= attribute.name %>
 <% end -%>
+    created_at
+    updated_at
     url
   ]
 
   it "renders a list of <%= table_name %> as json with following attributes: #{attributes.join(', ')}" do
     render
 
-    hash = JSON.parse(rendered)
+    hash = MultiJson.load rendered
     expect(hash.first).to eq(hash = hash.last)
     expect(hash.keys.sort).to eq attributes.sort
+    expected = MultiJson.load MultiJson.dump @user.attributes.slice *attributes
+    expected['url'] = <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
+    expect(hash).to eq expected
 <% for attribute in attributes -%>
-    expect(hash['<%= attribute.name %>']).to eq @<%= ns_file_name %>.<%= attribute.name %>.to_s
+    # expect(hash['<%= attribute.name %>']).to eq expected['<%= attribute.name %>']
 <% end -%>
-    expect(hash['url']).to eq <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
+    # expect(hash['url']).to eq <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
   end
 end
