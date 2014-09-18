@@ -24,8 +24,6 @@ describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
 <% for attribute in attributes -%>
     <%= attribute.name %>
 <% end -%>
-    created_at
-    updated_at
     url
   ]
 
@@ -35,10 +33,11 @@ describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
     hash = MultiJson.load rendered
     expect(hash.first).to eq(hash = hash.last)
     expect(hash.keys.sort).to eq attributes.sort
-    expected = MultiJson.load MultiJson.dump @<%= ns_file_name %>.attributes.slice *attributes
+    expected = @<%= ns_file_name %>.attributes.slice *attributes
+    expected = MultiJson.load MultiJson.dump expected
     expected['url'] = <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
     expect(hash).to eq expected
-<% for attribute in attributes -%>
+<% for attribute in attributes + ['id'] -%>
     # expect(hash['<%= attribute.name %>']).to eq @<%= ns_file_name %>.<%= attribute.name %>.to_s
 <% end -%>
     # expect(hash['url']).to eq <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
