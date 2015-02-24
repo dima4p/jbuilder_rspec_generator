@@ -4,15 +4,16 @@ require 'rails_helper'
 require 'spec_helper'
 <% end -%>
 
+<% open_attributes = attributes.reject(&:password_digest?) -%>
 describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
   before(:each) do
     allow(controller).to receive(:can?).and_return(true)
 <% if Rails.application.config.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
     @<%= ns_file_name %> = create(:<%= ns_file_name %>)
 <% else -%>
-    @<%= ns_file_name %> = <%= class_name %>.create(<%= attributes.empty? ? ')' : '' %>
-<% attributes.each_with_index do |attribute, attribute_index| -%>
-      :<%= attribute.name %> => <%= value_for(attribute) %><%= attribute_index == attributes.length - 1 ? '' : ','%>
+    @<%= ns_file_name %> = <%= class_name %>.create(<%= open_attributes.empty? ? ')' : '' %>
+<% open_attributes.each_with_index do |attribute, attribute_index| -%>
+      :<%= attribute.name %> => <%= value_for(attribute) %><%= attribute_index == open_attributes.length - 1 ? '' : ','%>
 <% end -%>
     )
 <% end -%>
@@ -21,7 +22,7 @@ describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
 
   attributes = %w[
     id
-<% for attribute in attributes -%>
+<% for attribute in open_attributes -%>
     <%= attribute.name %>
 <% end -%>
     url
@@ -38,7 +39,7 @@ describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
     expected['url'] = <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
     expect(hash).to eq expected
     # expect(hash['id']).to eq @<%= ns_file_name %>.id.to_s
-<% for attribute in attributes -%>
+<% for attribute in open_attributes -%>
     # expect(hash['<%= attribute.name %>']).to eq @<%= ns_file_name %>.<%= attribute.name %>.to_s
 <% end -%>
     # expect(hash['url']).to eq <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
