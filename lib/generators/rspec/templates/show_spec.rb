@@ -7,7 +7,9 @@ require 'spec_helper'
 <% open_attributes = attributes.reject(&:password_digest?) -%>
 describe "<%= ns_table_name %>/show.json.jbuilder", type: :view do
   before(:each) do
+<% if Rails.application.config.generators.options[:rails][:cancan] -%>
     allow(controller).to receive(:can?).and_return(true)
+<% end -%>
 <% if Rails.application.config.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
     @<%= ns_file_name %> = assign(:<%= ns_file_name %>, create(:<%= ns_file_name %>))
 <% else -%>
