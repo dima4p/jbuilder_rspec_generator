@@ -15,7 +15,7 @@ describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
 <% else -%>
     @<%= ns_file_name %> = <%= class_name %>.create(<%= open_attributes.empty? ? ')' : '' %>
 <% open_attributes.each_with_index do |attribute, attribute_index| -%>
-      :<%= attribute.name %> => <%= value_for(attribute) %><%= attribute_index == open_attributes.length - 1 ? '' : ','%>
+      <%= attribute.name %>: <%= value_for(attribute) %><%= attribute_index == open_attributes.length - 1 ? '' : ','%>
 <% end -%>
     )
 <% end -%>
