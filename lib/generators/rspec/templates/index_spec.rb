@@ -5,6 +5,7 @@ require 'spec_helper'
 <% end -%>
 
 <% open_attributes = attributes.reject(&:password_digest?) -%>
+<% links = open_attributes.select{|a| [:belongs_to, :references].include? a.type} -%>
 describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
   before(:each) do
 <% if Rails.application.config.generators.options[:rails][:cancan] -%>
@@ -20,6 +21,7 @@ describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
     )
 <% end -%>
     assign :<%= table_name %>, [@<%= ns_file_name %>, @<%= ns_file_name %>]
+    render
   end
 
   attributes = %w[
@@ -29,21 +31,48 @@ describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
 <% end -%>
     url
   ]
+<% if links.present? -%>
+  complex = %w[
+<% for attribute in links -%>
+    <%= attribute.name %>
+<% end -%>
+  ]
+<% for attribute in links -%>
+  <%= attribute.name %>_attributes = %w[
+    id
+    name
+    url
+  ]
+<% end -%>
+<% end -%>
 
   it "renders a list of <%= table_name %> as json with following attributes: #{attributes.join(', ')}" do
-    render
-
     hash = MultiJson.load rendered
     expect(hash.first).to eq(hash = hash.last)
     expect(hash.keys.sort).to eq attributes.sort
+<% if links.present? -%>
+    expected = @<%= ns_file_name %>.attributes.slice *(attributes - complex)
+<% else -%>
     expected = @<%= ns_file_name %>.attributes.slice *attributes
+<% end -%>
     expected = MultiJson.load MultiJson.dump expected
     expected['url'] = <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
+<% if links.present? -%>
+    expect(hash.except! *complex).to eq expected
+<% else -%>
     expect(hash).to eq expected
-    # expect(hash['id']).to eq @<%= ns_file_name %>.id.to_s
-<% for attribute in open_attributes -%>
-    # expect(hash['<%= attribute.name %>']).to eq @<%= ns_file_name %>.<%= attribute.name %>.to_s
 <% end -%>
-    # expect(hash['url']).to eq <%= ns_file_name %>_url(@<%= ns_file_name %>, format: 'json')
   end
+<% for attribute in links -%>
+
+  it "renders <%= attribute.name %> of the <%= table_name %> with the following attributes: #{<%= attribute.name %>_attributes.join(', ')}" do
+    hash = MultiJson.load(rendered).last
+    hash = hash['<%= attribute.name %>']
+    expect(hash.keys.sort).to eq <%= attribute.name %>_attributes.sort
+    expected = @<%= ns_file_name %>.<%= attribute.name %>.attributes.slice *<%= attribute.name %>_attributes
+    expected = MultiJson.load MultiJson.dump expected
+    expected['url'] = <%= attribute.name %>_url(@<%= ns_file_name %>.<%= attribute.name %>, format: 'json')
+    expect(hash).to eq expected
+  end
+<% end -%>
 end
