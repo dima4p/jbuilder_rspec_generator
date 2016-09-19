@@ -29,6 +29,8 @@ describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
 <% for attribute in open_attributes -%>
     <%= attribute.name %>
 <% end -%>
+    created_at
+    updated_at
     url
   ]
 <% if links.present? -%>
