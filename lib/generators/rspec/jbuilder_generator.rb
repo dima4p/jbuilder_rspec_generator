@@ -6,6 +6,11 @@ module Rspec
     class JbuilderGenerator < Base
       include ::Rails::Generators::ResourceHelpers
 
+      class_option :with_api, type: :boolean,
+                         desc: "Generates also API controller in 'app/contorllers/api'"
+      class_option :api_version, type: :string,
+                         desc: "Adds specified path as version to 'app/contorllers/api'"
+
       argument :attributes, :type => :array, :default => [], :banner => "field:type field:type"
 
       def generate_view_specs

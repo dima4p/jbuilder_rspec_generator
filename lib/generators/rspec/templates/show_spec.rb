@@ -32,6 +32,7 @@ describe "<%= ns_table_name %>/show.json.jbuilder", type: :view do
 <% end -%>
     created_at
     updated_at
+    url
   ]
 <% if links.present? -%>
   complex = %w[
@@ -57,6 +58,7 @@ describe "<%= ns_table_name %>/show.json.jbuilder", type: :view do
     expected = @<%= ns_file_name %>.attributes.slice *attributes
 <% end -%>
     expected = MultiJson.load MultiJson.dump expected
+    expected['url'] = <%= "api_" if options[:with_api] %><%= "#{options[:api_version]}_" if options[:with_api] and options[:api_version].present? %><%= ns_file_name %>_url(@<%= ns_file_name %><%= ", format: 'json'" unless options[:with_api] %>)
 <% if links.present? -%>
     expect(hash.except! *complex).to eq expected
 <% else -%>
@@ -71,7 +73,7 @@ describe "<%= ns_table_name %>/show.json.jbuilder", type: :view do
     expect(hash.keys.sort).to eq <%= attribute.name %>_attributes.sort
     expected = @<%= ns_file_name %>.<%= attribute.name %>.attributes.slice *<%= attribute.name %>_attributes
     expected = MultiJson.load MultiJson.dump expected
-    expected['url'] = <%= attribute.name %>_url(@<%= ns_file_name %>.<%= attribute.name %>, format: 'json')
+    expected['url'] = <%= "api_" if options[:with_api] %><%= "#{options[:api_version]}_" if options[:with_api] and options[:api_version].present? %><%= attribute.name %>_url(@<%= ns_file_name %>.<%= attribute.name %><%= ", format: 'json'" unless options[:with_api] %>)
     expect(hash).to eq expected
   end
 <% end -%>
