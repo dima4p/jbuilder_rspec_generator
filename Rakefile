@@ -21,6 +21,8 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{Generates RSpecs for jbuilder templates}
   gem.email = "dima@koulikoff.ru"
   gem.authors = ["Dmitri Koulikoff"]
+  gem.version = File.exist?('VERSION') ? File.read('VERSION') : ""
+
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new

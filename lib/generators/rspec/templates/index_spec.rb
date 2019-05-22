@@ -11,7 +11,7 @@ describe "<%= ns_table_name %>/index.json.jbuilder", type: :view do
 <% if Rails.application.config.generators.options[:rails][:cancan] -%>
     allow(controller).to receive(:can?).and_return(true)
 <% end -%>
-<% if Rails.application.config.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
+<% if Rails.application.config.generators.options[:rails][:fixture_replacement] == :factory_bot -%>
     @<%= ns_file_name %> = create(:<%= ns_file_name %>)
 <% else -%>
     @<%= ns_file_name %> = <%= class_name %>.create(<%= open_attributes.empty? ? ')' : '' %>
